@@ -1,0 +1,158 @@
+.promo-banners {
+  padding: 2rem 0;
+  background-color: var(--color-background);
+  width: 100%;
+  overflow: hidden;
+}
+
+.promo-banners-container {
+  position: relative;
+}
+
+.promo-banners-scroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+.promo-banner-slide {
+  flex-shrink: 0;
+  width: 100%;
+  scroll-snap-align: center;
+}
+
+.promo-banner {
+  position: relative;
+  height: 16rem;
+  margin: 0 1rem;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .promo-banner {
+    height: 20rem;
+    margin: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .promo-banner {
+    height: 24rem;
+  }
+}
+
+.promo-banner-image {
+  position: absolute;
+  inset: 0;
+}
+
+.promo-banner-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.promo-banner-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5), transparent);
+}
+
+.promo-banner-content {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+  max-width: 42rem;
+}
+
+@media (min-width: 640px) {
+  .promo-banner-content {
+    padding: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .promo-banner-content {
+    padding: 4rem;
+  }
+}
+
+.promo-banner-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: white;
+  line-height: 1.25;
+}
+
+@media (min-width: 640px) {
+  .promo-banner-title {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .promo-banner-title {
+    font-size: 3rem;
+  }
+}
+
+.promo-banner-description {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+@media (min-width: 640px) {
+  .promo-banner-description {
+    font-size: 1.125rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .promo-banner-description {
+    font-size: 1.25rem;
+  }
+}
+
+.promo-banner-button {
+  background-color: white;
+  color: #1a1a1a;
+  padding: 1.5rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.promo-banner-button:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.promo-banners-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.promo-banner-dot {
+  height: 0.5rem;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  background-color: rgba(115, 115, 115, 0.3);
+  width: 0.5rem;
+  border: none;
+  cursor: pointer;
+}
+
+.promo-banner-dot-active {
+  width: 2rem;
+  background-color: var(--color-primary);
+}

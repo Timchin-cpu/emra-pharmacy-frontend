@@ -1,0 +1,41 @@
+.category-chips {
+  padding: 4rem 0;
+  background-color: var(--color-background);
+  width: 100%;
+}
+
+.category-chips-container {
+  width: 100%;
+}
+
+.category-chips-scroll {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.category-chip {
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-size: 1rem;
+  font-weight: 300;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background-color: var(--color-card);
+  color: var(--color-foreground);
+  border: 1px solid var(--color-border);
+}
+
+.category-chip:hover {
+  border-color: var(--color-primary);
+}
+
+.category-chip-active {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border-color: var(--color-primary);
+}
