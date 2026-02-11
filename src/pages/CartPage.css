@@ -12,7 +12,7 @@
 }
 @media (max-width: 456px) {
   .cart-quantity-controls {
-    gap: 0;
+    gap: 0 !important;
   }
 }
 .cart-main {
