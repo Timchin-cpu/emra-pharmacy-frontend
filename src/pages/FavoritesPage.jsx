@@ -18,10 +18,15 @@ export default function FavoritesPage() {
   }, []);
 
   const handleAddToCart = (item) => {
+    // Безопасное преобразование цены
+    const price = typeof item.price === 'string' 
+      ? parseFloat(item.price) 
+      : Number(item.price);
+
     addItem({
       id: item.id,
       name: item.name,
-      price: item.price,
+      price: price,
       quantity: 1,
       image: item.image,
     });
@@ -58,41 +63,48 @@ export default function FavoritesPage() {
           </motion.div>
         ) : (
           <div className="favorites-grid">
-            {favorites.map((item, index) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="favorite-card"
-              >
-                <Link to={`/product/${item.id}`}>
-                  <div className="favorite-image-wrapper">
-                    <div className="favorite-image-container">
-                      <img src={item.image} alt={item.name} loading="lazy" />
+            {favorites.map((item, index) => {
+              // Безопасное преобразование цены для отображения
+              const price = typeof item.price === 'string' 
+                ? parseFloat(item.price) 
+                : Number(item.price);
+
+              return (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="favorite-card"
+                >
+                  <Link to={`/product/${item.id}`}>
+                    <div className="favorite-image-wrapper">
+                      <div className="favorite-image-container">
+                        <img src={item.image} alt={item.name} loading="lazy" />
+                      </div>
                     </div>
+                    <h3 className="favorite-name">{item.name}</h3>
+                    <p className="favorite-price">₽{price.toFixed(2)}</p>
+                  </Link>
+                  <div className="favorite-actions">
+                    <button
+                      onClick={() => handleAddToCart(item)}
+                      className="btn-add-cart"
+                    >
+                      <ShoppingCart size={14} />
+                      <span className="btn-text-full">В корзину</span>
+                      <span className="btn-text-short">+</span>
+                    </button>
+                    <button
+                      onClick={() => removeFavorite(item.id)}
+                      className="btn-remove"
+                    >
+                      <Heart size={16} className="heart-filled" />
+                    </button>
                   </div>
-                  <h3 className="favorite-name">{item.name}</h3>
-                  <p className="favorite-price">${item.price.toFixed(2)}</p>
-                </Link>
-                <div className="favorite-actions">
-                  <button
-                    onClick={() => handleAddToCart(item)}
-                    className="btn-add-cart"
-                  >
-                    <ShoppingCart size={14} />
-                    <span className="btn-text-full">В корзину</span>
-                    <span className="btn-text-short">+</span>
-                  </button>
-                  <button
-                    onClick={() => removeFavorite(item.id)}
-                    className="btn-remove"
-                  >
-                    <Heart size={16} className="heart-filled" />
-                  </button>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
         )}
       </main>
