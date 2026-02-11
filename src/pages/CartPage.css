@@ -10,7 +10,11 @@
     padding-bottom: 0;
   }
 }
-
+@media (max-width: 456px) {
+  .cart-quantity-controls {
+    gap: 0;
+  }
+}
 .cart-main {
   width: 100%;
   max-width: 1280px;
