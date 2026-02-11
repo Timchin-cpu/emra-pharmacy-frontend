@@ -59,11 +59,11 @@ export default function CartPage() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="cart-item"
                 >
-                  <Link to={`/product/${item.id.split('-')[0]}`}>
+                  <Link to={`/product/${item.productId || item.id}`}>
                     <img src={item.image} alt={item.name} className="cart-item-image" />
                   </Link>
                   <div className="cart-item-details">
-                    <Link to={`/product/${item.id.split('-')[0]}`}>
+                    <Link to={`/product/${item.productId || item.id}`}>
                       <h3 className="cart-item-name">{item.name}</h3>
                     </Link>
                     {item.variant && (
