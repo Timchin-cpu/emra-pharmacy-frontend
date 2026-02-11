@@ -15,7 +15,7 @@
     gap: 0 !important;
   }
   .cart-item-actions {
-    display:none !important;
+    display:block !important;
   }
 
 }
