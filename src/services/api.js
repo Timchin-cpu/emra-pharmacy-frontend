@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // API Base URL из переменных окружения
-const API_BASE_URL = 'http://213.171.7.232/api';
+const API_BASE_URL = 'https://api.programsa.ru/api';
 
 // Создаём instance axios с базовыми настройками
 const api = axios.create({
