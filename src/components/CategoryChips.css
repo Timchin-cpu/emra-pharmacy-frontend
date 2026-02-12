@@ -1,6 +1,7 @@
 .category-chips {
   padding: 4rem 0;
   padding-bottom: 0;
+  padding-top: 5px;
   background-color: var(--color-background);
   width: 100%;
 }
