@@ -7,13 +7,11 @@ import Footer from '../components/Footer';
 import MobileBottomNav from '../components/MobileBottomNav';
 import ProductCard from '../components/ProductCard';
 import { bannersAPI } from '../services/apiService';
-import { useProducts } from '../context/ProductsContext';
 import './BannerPage.css';
 
 export default function BannerPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { products, loading: productsLoading } = useProducts();
   const [banner, setBanner] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -29,7 +27,6 @@ export default function BannerPage() {
           : [];
         const found = list.find(b => String(b.id) === String(id));
         if (found) setBanner(found);
-        console.log(found)
       } catch {
         // баннер не найден
       } finally {
@@ -38,8 +35,6 @@ export default function BannerPage() {
     };
     load();
   }, [id]);
-
-  const recommended = products.slice(0, 6);
 
   if (loading) {
     return (
@@ -70,12 +65,15 @@ export default function BannerPage() {
     );
   }
 
+  // Товары именно этого баннера
+  const bannerProducts = banner.products || [];
+
   return (
     <div className="banner-page">
       <Header />
       <main>
 
-        {/* Hero баннвер */}
+        {/* Hero */}
         <div className="banner-hero">
           {banner.image && (
             <div className="banner-hero-image">
@@ -84,7 +82,16 @@ export default function BannerPage() {
           )}
           <div className="banner-hero-gradient" />
           <div className="banner-hero-content">
-   
+            <motion.button
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4 }}
+              className="banner-back-btn"
+              onClick={() => navigate('/')}
+            >
+              <ArrowLeft size={18} />
+              Назад
+            </motion.button>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -109,12 +116,7 @@ export default function BannerPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
               >
-                <a
-                  href={banner.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="banner-hero-btn"
-                >
+                <a href={banner.link} target="_blank" rel="noopener noreferrer" className="banner-hero-btn">
                   Перейти
                 </a>
               </motion.div>
@@ -122,30 +124,27 @@ export default function BannerPage() {
           </div>
         </div>
 
-        {/* Товары */}
-        <section className="banner-products-section">
-          <div className="banner-products-container">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="banner-products-title"
-            >
-              Рекомендуемые товары
-            </motion.h2>
-
-            {productsLoading ? (
-              <p style={{ textAlign: 'center', padding: '40px', color: '#666' }}>Загрузка товаров...</p>
-            ) : (
+        {/* Товары баннера */}
+        {bannerProducts.length > 0 && (
+          <section className="banner-products-section">
+            <div className="banner-products-container">
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="banner-products-title"
+              >
+                Товары акции
+              </motion.h2>
               <div className="banner-products-grid">
-                {recommended.map((product, index) => (
+                {bannerProducts.map((product, index) => (
                   <ProductCard key={product.id} product={product} index={index} />
                 ))}
               </div>
-            )}
-          </div>
-        </section>
+            </div>
+          </section>
+        )}
 
       </main>
       <Footer />
