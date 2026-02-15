@@ -1,7 +1,20 @@
+import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import './HeroBanner.css';
 
 export default function HeroBanner() {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    // Telegram WebApp может блокировать autoplay — принудительно запускаем
+    video.muted = true;
+    video.play().catch(() => {
+      // Если autoplay заблокирован — просто показываем постер
+    });
+  }, []);
+
   const scrollToProducts = () => {
     const productsSection = document.getElementById('products');
     if (productsSection) {
@@ -12,17 +25,18 @@ export default function HeroBanner() {
   return (
     <section className="hero-banner">
       <div className="hero-gradient" />
-      
-      <motion.video
+
+      <video
+        ref={videoRef}
         src="/videos/hero.mp4"
         className="hero-video"
         autoPlay
         loop
         muted
         playsInline
-        initial={{ opacity: 0, scale: 1.1 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.5, ease: 'easeOut' }}
+        preload="auto"
+        webkit-playsinline="true"
+        x5-playsinline="true"
       />
 
       <div className="hero-content">
