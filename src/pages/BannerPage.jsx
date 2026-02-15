@@ -74,7 +74,7 @@ export default function BannerPage() {
       <Header />
       <main>
 
-        {/* Hero баннер */}
+        {/* Hero баннвер */}
         <div className="banner-hero">
           {banner.image && (
             <div className="banner-hero-image">
