@@ -128,3 +128,101 @@
   align-items: center;
   justify-content: center;
 }
+
+/* ===== SEARCH FORM (desktop) ===== */
+.header-search-form {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  animation: searchSlideIn 0.2s ease;
+}
+
+@keyframes searchSlideIn {
+  from { opacity: 0; transform: translateX(12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.header-search-input {
+  width: 220px;
+  height: 2.25rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  padding: 0 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--color-foreground);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.header-search-input::placeholder {
+  color: var(--color-muted-foreground);
+}
+
+.header-search-input:focus {
+  border-color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* На мобильных десктопная форма скрыта */
+@media (max-width: 1023px) {
+  .header-search-form {
+    display: none;
+  }
+}
+
+/* ===== SEARCH BAR MOBILE (под хедером) ===== */
+.header-search-mobile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  animation: searchSlideIn 0.2s ease;
+}
+
+.header-search-mobile-icon {
+  color: var(--color-muted-foreground);
+  flex-shrink: 0;
+}
+
+.header-search-mobile-input {
+  flex: 1;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  color: var(--color-foreground);
+  font-family: inherit;
+  outline: none;
+}
+
+.header-search-mobile-input::placeholder {
+  color: var(--color-muted-foreground);
+}
+
+.header-search-mobile-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--color-muted-foreground);
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.header-search-mobile-clear:hover {
+  color: var(--color-foreground);
+}
+
+/* Десктопная строка поиска скрыта на мобильных */
+@media (min-width: 1024px) {
+  .header-search-mobile {
+    display: none;
+  }
+}

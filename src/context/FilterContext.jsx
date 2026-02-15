@@ -4,9 +4,15 @@ const FilterContext = createContext(undefined);
 
 export function FilterProvider({ children }) {
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <FilterContext.Provider value={{ selectedCategory, setSelectedCategory }}>
+    <FilterContext.Provider value={{
+      selectedCategory,
+      setSelectedCategory,
+      searchQuery,
+      setSearchQuery,
+    }}>
       {children}
     </FilterContext.Provider>
   );

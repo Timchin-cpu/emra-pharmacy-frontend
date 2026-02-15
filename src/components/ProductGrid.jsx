@@ -5,18 +5,28 @@ import { useProducts } from '../context/ProductsContext';
 import './ProductGrid.css';
 
 export default function ProductGrid() {
-  const { selectedCategory } = useFilter();
+  const { selectedCategory, searchQuery } = useFilter();
   const { products, loading, error } = useProducts();
 
   // Фильтрация по категории
-  const filteredProducts = selectedCategory
-    ? products.filter((product) => 
-        product.category?.slug === selectedCategory || 
+  let filteredProducts = selectedCategory
+    ? products.filter((product) =>
+        product.category?.slug === selectedCategory ||
         product.category?.name === selectedCategory
       )
     : products;
 
-  // Состояние загрузки
+  // Фильтрация по поисковому запросу
+  if (searchQuery && searchQuery.trim()) {
+    const q = searchQuery.toLowerCase().trim();
+    filteredProducts = filteredProducts.filter((product) =>
+      product.name?.toLowerCase().includes(q) ||
+      product.description?.toLowerCase().includes(q) ||
+      product.category?.name?.toLowerCase().includes(q) ||
+      product.tag?.toLowerCase().includes(q)
+    );
+  }
+
   if (loading) {
     return (
       <section id="products" className="product-grid-section">
@@ -29,7 +39,6 @@ export default function ProductGrid() {
     );
   }
 
-  // Ошибка загрузки
   if (error) {
     return (
       <section id="products" className="product-grid-section">
@@ -38,32 +47,30 @@ export default function ProductGrid() {
             <p style={{ fontSize: '18px', color: '#e74c3c' }}>
               ⚠️ Ошибка загрузки товаров: {error}
             </p>
-            <p style={{ fontSize: '14px', color: '#666', marginTop: '10px' }}>
-              Проверьте что backend запущен на http://localhost:5000
-            </p>
           </div>
         </div>
       </section>
     );
   }
 
-  // Нет товаров
   if (!products || products.length === 0) {
     return (
       <section id="products" className="product-grid-section">
         <div className="product-grid-container">
           <div style={{ textAlign: 'center', padding: '60px 20px' }}>
-            <p style={{ fontSize: '18px', color: '#666' }}>
-              📦 Товары не найдены
-            </p>
-            <p style={{ fontSize: '14px', color: '#999', marginTop: '10px' }}>
-              Добавьте товары через админ-панель или создайте seed данные
-            </p>
+            <p style={{ fontSize: '18px', color: '#666' }}>📦 Товары не найдены</p>
           </div>
         </div>
       </section>
     );
   }
+
+  // Заголовок секции
+  const sectionTitle = searchQuery
+    ? `Результаты поиска: «${searchQuery}»`
+    : selectedCategory
+    ? selectedCategory
+    : 'Популярные товары';
 
   return (
     <section id="products" className="product-grid-section">
@@ -75,18 +82,21 @@ export default function ProductGrid() {
           transition={{ duration: 0.6 }}
           className="product-grid-title"
         >
-          {selectedCategory ? selectedCategory : 'Популярные товары'}
+          {sectionTitle}
         </motion.h2>
-        <div className="product-grid">
-          {filteredProducts.map((product, index) => (
-            <ProductCard key={product.id} product={product} index={index} />
-          ))}
-        </div>
-        {filteredProducts.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+        {filteredProducts.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '60px 20px' }}>
             <p style={{ fontSize: '16px', color: '#666' }}>
-              Товары в категории "{selectedCategory}" не найдены
+              {searchQuery
+                ? `По запросу «${searchQuery}» ничего не найдено`
+                : `Товары в категории «${selectedCategory}» не найдены`}
             </p>
+          </div>
+        ) : (
+          <div className="product-grid">
+            {filteredProducts.map((product, index) => (
+              <ProductCard key={product.id} product={product} index={index} />
+            ))}
           </div>
         )}
       </div>
