@@ -120,8 +120,8 @@ export default function PromoBanners() {
                 <div className="promo-banner-gradient" />
                 <div className="promo-banner-content">
                   <h2 className="promo-banner-title">{banner.title}</h2>
-                  {banner.description && (
-                    <p className="promo-banner-description">{banner.description}</p>
+                  {banner.subtitle && (
+                    <p className="promo-banner-description">{banner.subtitle}</p>
                   )}
                   {(banner.buttonText || banner.subtitle) && (
                     <button
