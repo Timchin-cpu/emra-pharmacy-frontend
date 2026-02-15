@@ -108,6 +108,7 @@
   }
 }
 
+/* Обычная цена */
 .product-card-price {
   font-size: 0.8rem;
   color: var(--color-foreground);
@@ -118,4 +119,31 @@
   .product-card-price {
     font-size: 1rem;
   }
+}
+
+/* Обёртка когда есть oldPrice */
+.product-card-price-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+/* Перечёркнутая старая цена */
+.product-card-price-old {
+  font-size: 0.7rem;
+  color: var(--color-muted-foreground);
+  text-decoration: line-through;
+  font-weight: 400;
+}
+
+@media (min-width: 640px) {
+  .product-card-price-old {
+    font-size: 0.875rem;
+  }
+}
+
+/* Новая цена со скидкой */
+.product-card-price-sale {
+  color: var(--color-primary);
 }

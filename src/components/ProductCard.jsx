@@ -7,10 +7,13 @@ import './ProductCard.css';
 export default function ProductCard({ product, index }) {
   const { addFavorite, removeFavorite, isFavorite } = useFavorites();
 
-  // Безопасное преобразование цены в число
-  const price = typeof product.price === 'string' 
-    ? parseFloat(product.price) 
+  const price = typeof product.price === 'string'
+    ? parseFloat(product.price)
     : Number(product.price);
+
+  const oldPrice = product.oldPrice != null
+    ? (typeof product.oldPrice === 'string' ? parseFloat(product.oldPrice) : Number(product.oldPrice))
+    : null;
 
   const handleToggleFavorite = (e) => {
     e.preventDefault();
@@ -20,7 +23,7 @@ export default function ProductCard({ product, index }) {
       addFavorite({
         id: product.id,
         name: product.name,
-        price: price, // используем преобразованную цену
+        price: price,
         image: product.image,
         category: product.category,
       });
@@ -56,7 +59,7 @@ export default function ProductCard({ product, index }) {
               <button
                 onClick={handleToggleFavorite}
                 className="product-card-favorite"
-                aria-label={isFavorite(product.id) ? 'Remove from favorites' : 'Add to favorites'}
+                aria-label={isFavorite(product.id) ? 'Убрать из избранного' : 'Добавить в избранное'}
               >
                 <Heart
                   size={18}
@@ -64,8 +67,17 @@ export default function ProductCard({ product, index }) {
                 />
               </button>
             </div>
+
             <h3 className="product-card-name">{product.name}</h3>
-            <p className="product-card-price">₽{price.toFixed(2)}</p>
+
+            {oldPrice ? (
+              <div className="product-card-price-wrapper">
+                <span className="product-card-price-old">₽{oldPrice.toFixed(2)}</span>
+                <span className="product-card-price product-card-price-sale">₽{price.toFixed(2)}</span>
+              </div>
+            ) : (
+              <p className="product-card-price">₽{price.toFixed(2)}</p>
+            )}
           </motion.div>
         </div>
       </Link>
