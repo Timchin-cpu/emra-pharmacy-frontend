@@ -15,7 +15,7 @@ const FALLBACK_BANNERS = [
   {
     id: 2,
     title: 'Бесплатная доставка',
-    description: 'При заказе от 1000₽',
+    description: 'При заказе от 1000₸',
     buttonText: 'К покупкам',
     image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=1200&q=80',
   },

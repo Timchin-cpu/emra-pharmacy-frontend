@@ -84,7 +84,7 @@ export default function FavoritesPage() {
                       </div>
                     </div>
                     <h3 className="favorite-name">{item.name}</h3>
-                    <p className="favorite-price">₽{price.toFixed(2)}</p>
+                    <p className="favorite-price">₸{price.toFixed(2)}</p>
                   </Link>
                   <div className="favorite-actions">
                     <button

@@ -72,11 +72,11 @@ export default function ProductCard({ product, index }) {
 
             {oldPrice ? (
               <div className="product-card-price-wrapper">
-                <span className="product-card-price-old">₽{oldPrice.toFixed(2)}</span>
-                <span className="product-card-price product-card-price-sale">₽{price.toFixed(2)}</span>
+                <span className="product-card-price-old">₸{oldPrice.toFixed(2)}</span>
+                <span className="product-card-price product-card-price-sale">₸{price.toFixed(2)}</span>
               </div>
             ) : (
-              <p className="product-card-price">₽{price.toFixed(2)}</p>
+              <p className="product-card-price">₸{price.toFixed(2)}</p>
             )}
           </motion.div>
         </div>

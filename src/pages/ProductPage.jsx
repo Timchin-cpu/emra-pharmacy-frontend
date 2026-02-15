@@ -139,14 +139,14 @@ export default function ProductPage() {
             {oldPrice ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
                 <span style={{ fontSize: '1.5rem', color: 'var(--color-muted-foreground)', textDecoration: 'line-through' }}>
-                  ₽{oldPrice.toFixed(2)}
+                  ₸{oldPrice.toFixed(2)}
                 </span>
                 <span className="product-price" style={{ marginBottom: 0 }}>
-                  ₽{price.toFixed(2)}
+                  ₸{price.toFixed(2)}
                 </span>
               </div>
             ) : (
-              <p className="product-price">₽{price.toFixed(2)}</p>
+              <p className="product-price">₸{price.toFixed(2)}</p>
             )}
 
             <p className="product-description">{product.description}</p>

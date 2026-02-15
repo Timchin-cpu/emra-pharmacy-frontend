@@ -135,7 +135,7 @@ export default function ProfilePage() {
                         </p>
                       </div>
                       <div className="profile-order-details">
-                        <p className="profile-order-price">₽{order.totalAmount}</p>
+                        <p className="profile-order-price">₸{order.totalAmount}</p>
                         <span className={`profile-order-status profile-order-status-${order.status}`}>
                           {order.status === 'pending' && 'В обработке'}
                           {order.status === 'confirmed' && 'Подтверждён'}
