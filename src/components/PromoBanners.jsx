@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { bannersAPI } from '../services/apiService';
 import './PromoBanners.css';
 
-const banners = [
+// Фолбэк-баннеры на случай если API недоступен
+const FALLBACK_BANNERS = [
   {
     id: 1,
     title: 'Скидка 20%',
@@ -17,17 +19,56 @@ const banners = [
     buttonText: 'К покупкам',
     image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=1200&q=80',
   },
-  {
-    id: 3,
-    title: 'Новинки месяца',
-    description: 'Пробиотики премиум класса',
-    buttonText: 'К покупкам',
-    image: 'https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=1200&q=80',
-  },
 ];
 
 export default function PromoBanners() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [banners, setBanners] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const response = await bannersAPI.getActive();
+        // Парсим любую структуру ответа
+        const raw = response?.data ?? response;
+        const list = Array.isArray(raw)
+          ? raw
+          : Array.isArray(raw?.banners)
+          ? raw.banners
+          : Array.isArray(raw?.items)
+          ? raw.items
+          : [];
+
+        if (list.length > 0) {
+          setBanners(list);
+        } else {
+          setBanners(FALLBACK_BANNERS);
+        }
+      } catch {
+        setBanners(FALLBACK_BANNERS);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  const scrollToSlide = (index) => {
+    const container = document.querySelector('.promo-banners-scroll');
+    if (container) {
+      container.scrollTo({ left: index * container.clientWidth, behavior: 'smooth' });
+    }
+    setCurrentSlide(index);
+  };
+
+  if (loading) {
+    return (
+      <section className="promo-banners">
+        <div className="promo-banner" style={{ margin: '0 1rem', background: 'var(--color-card)' }} />
+      </section>
+    );
+  }
 
   return (
     <section className="promo-banners">
@@ -44,7 +85,11 @@ export default function PromoBanners() {
             >
               <div className="promo-banner">
                 <div className="promo-banner-image">
-                  <img src={banner.image} alt={banner.title} />
+                  <img
+                    src={banner.image}
+                    alt={banner.title}
+                    onError={e => { e.target.src = 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=1200&q=80' }}
+                  />
                 </div>
                 <div className="promo-banner-gradient" />
                 <div className="promo-banner-content">
@@ -57,25 +102,32 @@ export default function PromoBanners() {
                   >
                     {banner.title}
                   </motion.h2>
-                  <motion.p
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                    className="promo-banner-description"
-                  >
-                    {banner.description}
-                  </motion.p>
-                  <motion.div
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                  >
-                    <button className="promo-banner-button">
-                      {banner.buttonText}
-                    </button>
-                  </motion.div>
+                  {banner.description && (
+                    <motion.p
+                      initial={{ opacity: 0, x: -30 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: 0.3 }}
+                      className="promo-banner-description"
+                    >
+                      {banner.description}
+                    </motion.p>
+                  )}
+                  {(banner.buttonText || banner.linkValue) && (
+                    <motion.div
+                      initial={{ opacity: 0, x: -30 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: 0.4 }}
+                    >
+                      <button
+                        className="promo-banner-button"
+                        onClick={() => bannersAPI.trackClick?.(banner.id).catch(() => {})}
+                      >
+                        {banner.buttonText || 'К покупкам'}
+                      </button>
+                    </motion.div>
+                  )}
                 </div>
               </div>
             </motion.div>
@@ -86,18 +138,9 @@ export default function PromoBanners() {
           {banners.map((_, index) => (
             <button
               key={index}
-              onClick={() => {
-                const container = document.querySelector('.promo-banners-scroll');
-                if (container) {
-                  container.scrollTo({
-                    left: index * container.clientWidth,
-                    behavior: 'smooth',
-                  });
-                }
-                setCurrentSlide(index);
-              }}
+              onClick={() => scrollToSlide(index)}
               className={`promo-banner-dot ${currentSlide === index ? 'promo-banner-dot-active' : ''}`}
-              aria-label={`Go to slide ${index + 1}`}
+              aria-label={`Слайд ${index + 1}`}
             />
           ))}
         </div>
