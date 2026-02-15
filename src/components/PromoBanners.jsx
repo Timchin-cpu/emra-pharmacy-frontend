@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { bannersAPI } from '../services/apiService';
@@ -32,6 +32,7 @@ export default function PromoBanners() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
+  const scrollRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,6 +43,7 @@ export default function PromoBanners() {
         const list = Array.isArray(raw) ? raw
           : Array.isArray(raw?.banners) ? raw.banners
           : Array.isArray(raw?.items) ? raw.items
+          : Array.isArray(raw?.data) ? raw.data
           : [];
         setBanners(list.length > 0 ? list : FALLBACK_BANNERS);
       } catch {
@@ -53,11 +55,26 @@ export default function PromoBanners() {
     load();
   }, []);
 
+  // Слушаем scroll на контейнере и вычисляем текущий слайд
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const slideWidth = container.clientWidth;
+      if (slideWidth === 0) return;
+      const index = Math.round(container.scrollLeft / slideWidth);
+      setCurrentSlide(index);
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [banners]); // пересоздаём после загрузки баннеров
+
   const scrollToSlide = (index) => {
-    const container = document.querySelector('.promo-banners-scroll');
-    if (container) {
-      container.scrollTo({ left: index * container.clientWidth, behavior: 'smooth' });
-    }
+    const container = scrollRef.current;
+    if (!container) return;
+    container.scrollTo({ left: index * container.clientWidth, behavior: 'smooth' });
     setCurrentSlide(index);
   };
 
@@ -69,7 +86,9 @@ export default function PromoBanners() {
   if (loading) {
     return (
       <section className="promo-banners">
-        <div className="promo-banner" style={{ margin: '0 1rem', background: 'var(--color-card)', height: '16rem', borderRadius: '1rem' }} />
+        <div className="promo-banners-container">
+          <div className="promo-banner" style={{ margin: '0 1rem', background: 'var(--color-card)' }} />
+        </div>
       </section>
     );
   }
@@ -77,7 +96,7 @@ export default function PromoBanners() {
   return (
     <section className="promo-banners">
       <div className="promo-banners-container">
-        <div className="promo-banners-scroll">
+        <div className="promo-banners-scroll" ref={scrollRef}>
           {banners.map((banner, index) => (
             <motion.div
               key={banner.id}
@@ -85,7 +104,6 @@ export default function PromoBanners() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="promo-banner-slide"
-              onViewportEnter={() => setCurrentSlide(index)}
             >
               <div
                 className="promo-banner"
@@ -101,39 +119,18 @@ export default function PromoBanners() {
                 </div>
                 <div className="promo-banner-gradient" />
                 <div className="promo-banner-content">
-                  <motion.h2
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    className="promo-banner-title"
-                  >
-                    {banner.title}
-                  </motion.h2>
-                  {banner.subtitle && (
-                    <motion.p
-                      initial={{ opacity: 0, x: -30 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: 0.3 }}
-                      className="promo-banner-description"
-                    >
-                      {banner.subtitle}
-                    </motion.p>
+                  <h2 className="promo-banner-title">{banner.title}</h2>
+                  {banner.description && (
+                    <p className="promo-banner-description">{banner.description}</p>
                   )}
-                  <motion.div
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                  >
+                  {(banner.buttonText || banner.subtitle) && (
                     <button
                       className="promo-banner-button"
                       onClick={(e) => { e.stopPropagation(); handleBannerClick(banner); }}
                     >
                       {banner.buttonText || 'К покупкам'}
                     </button>
-                  </motion.div>
+                  )}
                 </div>
               </div>
             </motion.div>
