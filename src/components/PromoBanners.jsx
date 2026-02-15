@@ -110,7 +110,7 @@ export default function PromoBanners() {
                   >
                     {banner.title}
                   </motion.h2>
-                  {banner.description && (
+                  {banner.subtitle && (
                     <motion.p
                       initial={{ opacity: 0, x: -30 }}
                       whileInView={{ opacity: 1, x: 0 }}
@@ -118,7 +118,7 @@ export default function PromoBanners() {
                       transition={{ duration: 0.6, delay: 0.3 }}
                       className="promo-banner-description"
                     >
-                      {banner.description}
+                      {banner.subtitle}
                     </motion.p>
                   )}
                   <motion.div
