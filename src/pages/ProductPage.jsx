@@ -9,6 +9,11 @@ import { useFavorites } from '../context/FavoritesContext';
 import { useProducts } from '../context/ProductsContext';
 import './ProductPage.css';
 
+const formatPrice = (value) => {
+  const num = typeof value === 'string' ? parseFloat(value) : Number(value);
+  return Math.round(num).toLocaleString('ru-RU');
+};
+
 export default function ProductPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -107,12 +112,7 @@ export default function ProductPage() {
             transition={{ duration: 0.5 }}
             className="product-image-section"
           >
-            <img
-              src={product.image}
-              alt={product.name}
-              className="product-image"
-              loading="lazy"
-            />
+            <img src={product.image} alt={product.name} className="product-image" loading="lazy" />
           </motion.div>
 
           <motion.div
@@ -135,23 +135,21 @@ export default function ProductPage() {
               </button>
             </div>
 
-            {/* Цена с поддержкой oldPrice */}
             {oldPrice ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
                 <span style={{ fontSize: '1.5rem', color: 'var(--color-muted-foreground)', textDecoration: 'line-through' }}>
-                  ₸{oldPrice.toFixed(2)}
+                  ₸ {formatPrice(oldPrice)}
                 </span>
                 <span className="product-price" style={{ marginBottom: 0 }}>
-                  ₸{price.toFixed(2)}
+                  ₸ {formatPrice(price)}
                 </span>
               </div>
             ) : (
-              <p className="product-price">₸{price.toFixed(2)}</p>
+              <p className="product-price">₸ {formatPrice(price)}</p>
             )}
 
             <p className="product-description">{product.description}</p>
 
-            {/* Кнопка купить — открывает sku */}
             <button
               onClick={handleBuyClick}
               className="btn-add-to-cart"
@@ -162,12 +160,11 @@ export default function ProductPage() {
               Купить
             </button>
 
-            {/* Аккордеон */}
             <div className="product-accordion">
               {[
                 { key: 'ingredients', label: 'Состав', value: product.ingredients },
-                { key: 'usage',       label: 'Способ применения', value: product.usage },
-                { key: 'safety',      label: 'Меры предосторожности', value: product.safety },
+                { key: 'usage', label: 'Способ применения', value: product.usage },
+                { key: 'safety', label: 'Меры предосторожности', value: product.safety },
               ].map(({ key, label, value }) => (
                 <div className="accordion-item" key={key}>
                   <button onClick={() => toggleAccordion(key)} className="accordion-trigger">

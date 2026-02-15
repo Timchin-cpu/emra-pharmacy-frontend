@@ -4,6 +4,11 @@ import { Heart } from 'lucide-react';
 import { useFavorites } from '../context/FavoritesContext';
 import './ProductCard.css';
 
+const formatPrice = (value) => {
+  const num = typeof value === 'string' ? parseFloat(value) : Number(value);
+  return Math.round(num).toLocaleString('ru-RU');
+};
+
 export default function ProductCard({ product, index }) {
   const { addFavorite, removeFavorite, isFavorite } = useFavorites();
 
@@ -72,11 +77,11 @@ export default function ProductCard({ product, index }) {
 
             {oldPrice ? (
               <div className="product-card-price-wrapper">
-                <span className="product-card-price-old">₸{oldPrice.toFixed(2)}</span>
-                <span className="product-card-price product-card-price-sale">₸{price.toFixed(2)}</span>
+                <span className="product-card-price-old">₸ {formatPrice(oldPrice)}</span>
+                <span className="product-card-price product-card-price-sale">₸ {formatPrice(price)}</span>
               </div>
             ) : (
-              <p className="product-card-price">₸{price.toFixed(2)}</p>
+              <p className="product-card-price">₸ {formatPrice(price)}</p>
             )}
           </motion.div>
         </div>
