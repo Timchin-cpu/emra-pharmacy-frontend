@@ -14,9 +14,7 @@ export default function HeroBanner() {
       <div className="hero-gradient" />
       
       <motion.video
-        src="https://c.animaapp.com/mlb3gun1em62JQ/img/ai_1.mp4"
-        poster="https://c.animaapp.com/mlb3gun1em62JQ/img/ai_1-poster.png"
-        alt="Cherry Cola skincare collection on ice"
+        src="/videos/hero.mp4"
         className="hero-video"
         autoPlay
         loop
@@ -34,7 +32,7 @@ export default function HeroBanner() {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="hero-title"
         >
-          Здоровье в надежных руках
+          Скандинавское качество с 30 летний историей
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 30 }}
@@ -42,7 +40,7 @@ export default function HeroBanner() {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="hero-subtitle"
         >
-          Качественные лекарства и витамины для вашего здоровья
+          Beauty from within
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
