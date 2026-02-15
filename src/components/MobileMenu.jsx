@@ -40,9 +40,9 @@ export default function MobileMenu({ isOpen, onClose }) {
               <Link to="/favorites" onClick={onClose} className="mobile-menu-link">
                 Избранное
               </Link>
-              <Link to="/cart" onClick={onClose} className="mobile-menu-link">
+              {/* <Link to="/cart" onClick={onClose} className="mobile-menu-link">
                 Корзина
-              </Link>
+              </Link> */}
               <Link to="/profile" onClick={onClose} className="mobile-menu-link">
                 Профиль
               </Link>
