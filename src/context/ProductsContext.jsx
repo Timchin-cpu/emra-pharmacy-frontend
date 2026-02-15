@@ -21,6 +21,7 @@ export function ProductsProvider({ children }) {
       setError(null);
       
       const response = await productsAPI.getAll(params);
+      console.log(response.data)
       
       if (response.success) {
         setProducts(response.data.products || []);
