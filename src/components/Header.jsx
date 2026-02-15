@@ -74,7 +74,7 @@ export default function Header() {
               <Menu size={32} />
             </button>
 
-            <Link to="/" className="header-logo"><span>EMRA</span></Link>
+            <Link to="/" className="header-logo"><span>Аптека от А до Я</span></Link>
 
             <nav className="header-nav">
               <Link to="/"         className={`header-nav-link ${isHomePage      ? 'active' : ''}`}>Каталог</Link>

@@ -13,7 +13,7 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h3 className="footer-brand">EMRA</h3>
+            <h3 className="footer-brand">Аптека от А до Я</h3>
             <p className="footer-description">
               Качественные лекарства и витамины для вашего здоровья и благополучия.
             </p>
@@ -84,7 +84,7 @@ export default function Footer() {
         <div className="footer-bottom">
           <div className="footer-bottom-content">
             <p className="footer-copyright">
-              © 2024 EMRA. All rights reserved.
+              © 2024 Аптека от А до Я. All rights reserved.
             </p>
             <div className="footer-links">
               <a href="#" className="footer-bottom-link">Политика конфиденциальности</a>

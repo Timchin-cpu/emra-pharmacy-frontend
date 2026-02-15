@@ -59,10 +59,10 @@ export default function ProfilePage() {
   const handleContactSupport = () => {
     if (isTelegramUser) {
       // Открыть чат с поддержкой в Telegram
-      openTelegramLink('https://t.me/emra_support_bot');
+      openTelegramLink('https://t.me/Аптека от А до Я_support_bot');
     } else {
       // Открыть email
-      window.location.href = 'mailto:support@emra-pharmacy.ru';
+      window.location.href = 'mailto:support@Аптека от А до Я-pharmacy.ru';
     }
   };
 
