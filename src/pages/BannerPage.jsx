@@ -29,6 +29,7 @@ export default function BannerPage() {
           : [];
         const found = list.find(b => String(b.id) === String(id));
         if (found) setBanner(found);
+        console.log(found)
       } catch {
         // баннер не найден
       } finally {
