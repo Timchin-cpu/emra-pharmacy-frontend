@@ -84,7 +84,7 @@
 
 .banner-hero-title {
   font-size: 1.8rem;
-  font-weight: 700;
+  font-weight: 400;
   color: white;
   margin-bottom: 0.5rem;
   line-height: 1.2;
@@ -185,7 +185,7 @@
 
 .banner-products-title {
   font-size: 1.75rem;
-  font-weight: 700;
+  font-weight: 400;
   color: var(--color-foreground);
   margin-bottom: 0.5rem;
 }
