@@ -4,6 +4,7 @@ import ProductPage from './pages/ProductPage';
 import FavoritesPage from './pages/FavoritesPage';
 import CartPage from './pages/CartPage';
 import ProfilePage from './pages/ProfilePage';
+import BannerPage from './pages/BannerPage';
 import { AuthProvider } from './context/AuthContext';
 import { ProductsProvider } from './context/ProductsContext';
 import { CartProvider } from './context/CartContext';
@@ -21,6 +22,7 @@ export default function App() {
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/product/:id" element={<ProductPage />} />
+                  <Route path="/banner/:id" element={<BannerPage />} />
                   <Route path="/favorites" element={<FavoritesPage />} />
                   <Route path="/cart" element={<CartPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
@@ -33,4 +35,3 @@ export default function App() {
     </Router>
   );
 }
-//+

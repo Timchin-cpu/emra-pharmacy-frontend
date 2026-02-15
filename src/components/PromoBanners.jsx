@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { bannersAPI } from '../services/apiService';
 import './PromoBanners.css';
 
-// Фолбэк-баннеры на случай если API недоступен
 const FALLBACK_BANNERS = [
   {
     id: 1,
@@ -19,32 +19,31 @@ const FALLBACK_BANNERS = [
     buttonText: 'К покупкам',
     image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=1200&q=80',
   },
+  {
+    id: 3,
+    title: 'Новинки месяца',
+    description: 'Пробиотики премиум класса',
+    buttonText: 'К покупкам',
+    image: 'https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=1200&q=80',
+  },
 ];
 
 export default function PromoBanners() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const load = async () => {
       try {
         const response = await bannersAPI.getActive();
-        // Парсим любую структуру ответа
         const raw = response?.data ?? response;
-        const list = Array.isArray(raw)
-          ? raw
-          : Array.isArray(raw?.banners)
-          ? raw.banners
-          : Array.isArray(raw?.items)
-          ? raw.items
+        const list = Array.isArray(raw) ? raw
+          : Array.isArray(raw?.banners) ? raw.banners
+          : Array.isArray(raw?.items) ? raw.items
           : [];
-
-        if (list.length > 0) {
-          setBanners(list);
-        } else {
-          setBanners(FALLBACK_BANNERS);
-        }
+        setBanners(list.length > 0 ? list : FALLBACK_BANNERS);
       } catch {
         setBanners(FALLBACK_BANNERS);
       } finally {
@@ -62,10 +61,15 @@ export default function PromoBanners() {
     setCurrentSlide(index);
   };
 
+  const handleBannerClick = (banner) => {
+    bannersAPI.trackClick?.(banner.id).catch(() => {});
+    navigate(`/banner/${banner.id}`);
+  };
+
   if (loading) {
     return (
       <section className="promo-banners">
-        <div className="promo-banner" style={{ margin: '0 1rem', background: 'var(--color-card)' }} />
+        <div className="promo-banner" style={{ margin: '0 1rem', background: 'var(--color-card)', height: '16rem', borderRadius: '1rem' }} />
       </section>
     );
   }
@@ -83,12 +87,16 @@ export default function PromoBanners() {
               className="promo-banner-slide"
               onViewportEnter={() => setCurrentSlide(index)}
             >
-              <div className="promo-banner">
+              <div
+                className="promo-banner"
+                onClick={() => handleBannerClick(banner)}
+                style={{ cursor: 'pointer' }}
+              >
                 <div className="promo-banner-image">
                   <img
                     src={banner.image}
                     alt={banner.title}
-                    onError={e => { e.target.src = 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=1200&q=80' }}
+                    onError={e => { e.target.src = 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=1200&q=80'; }}
                   />
                 </div>
                 <div className="promo-banner-gradient" />
@@ -113,21 +121,19 @@ export default function PromoBanners() {
                       {banner.description}
                     </motion.p>
                   )}
-                  {(banner.buttonText || banner.linkValue) && (
-                    <motion.div
-                      initial={{ opacity: 0, x: -30 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: 0.4 }}
+                  <motion.div
+                    initial={{ opacity: 0, x: -30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                  >
+                    <button
+                      className="promo-banner-button"
+                      onClick={(e) => { e.stopPropagation(); handleBannerClick(banner); }}
                     >
-                      <button
-                        className="promo-banner-button"
-                        onClick={() => bannersAPI.trackClick?.(banner.id).catch(() => {})}
-                      >
-                        {banner.buttonText || 'К покупкам'}
-                      </button>
-                    </motion.div>
-                  )}
+                      {banner.buttonText || 'К покупкам'}
+                    </button>
+                  </motion.div>
                 </div>
               </div>
             </motion.div>
