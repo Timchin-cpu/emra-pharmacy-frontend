@@ -83,16 +83,7 @@ export default function BannerPage() {
           )}
           <div className="banner-hero-gradient" />
           <div className="banner-hero-content">
-            <motion.button
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4 }}
-              className="banner-back-btn"
-              onClick={() => navigate('/')}
-            >
-              <ArrowLeft size={18} />
-              Назад
-            </motion.button>
+   
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
